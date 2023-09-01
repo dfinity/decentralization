@@ -1,0 +1,2 @@
+# decentralization
+Platform Decentralization analysis
