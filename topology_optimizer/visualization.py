@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pulp
 import matplotlib.lines as mlines
+import os
+
 
 
 def visualize_node_allocation(network_data, solver_result, nakamoto_result, elapsed_time, attribute):
@@ -77,7 +79,20 @@ def visualize_node_allocation(network_data, solver_result, nakamoto_result, elap
     ax.text(0.65, 0.86, f"Total Nakamoto Coefficients: {total_nakamoto:.2f}", transform=ax.transAxes, verticalalignment='top')
 
     plt.tight_layout()
-    plt.show()
+    # Specify output folder
+    output_folder = 'output'
+    
+    # Check if the folder exists, if not, create it
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    # Save the plot into the output folder
+    plt.savefig(os.path.join(output_folder, f"{attribute}_node_allocation.png"))
+    
+    plt.show(block=False)
+    plt.pause(1)  
+    plt.close()
+    
 
 
 
@@ -154,7 +169,19 @@ def visualize_node_topology_matrix_with_double_rows_per_country(network_data):
    
     
     plt.tight_layout()
-    plt.show()
+    # Specify output folder
+    output_folder = 'output'
+    
+    # Check if the folder exists, if not, create it
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    # Save the plot into the output folder
+    plt.savefig(os.path.join(output_folder, "country_double_row_topology_matrix.png"))
+    
+    plt.show(block=False)
+    plt.pause(1)  
+    plt.close()
 
 
 def visualize_current_subnets(network_data):
@@ -257,7 +284,21 @@ def visualize_node_topology_matrix(network_data, dimension, display_subnet_slots
     ax.legend(handles, current_dimensions, title=displayed_dimension, bbox_to_anchor=(1.05, 1), loc='upper left')
     
     plt.tight_layout()
-    plt.show()
+    
+    # Specify output folder
+    output_folder = 'output'
+    
+    # Check if the folder exists, if not, create it
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    # Save the plot into the output folder
+    plt.savefig(os.path.join(output_folder, f"{dimension}_topology_matrix.png"))
+    
+    plt.show(block=False)
+    plt.pause(1)  
+    plt.close()
+    
 
 
 
