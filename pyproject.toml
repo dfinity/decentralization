@@ -1,14 +1,17 @@
 [tool.poetry]
 name = "ic-topology"
 version = "0.1.0"
-description = ""
-authors = ["Saša Tomić <sasa.tomic@dfinity.org>"]
+description = "IC Mainnet decentralization"
+authors = ["DRE team <dept-DRE@dfinity.org>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.13"
 requests = "^2.31.0"
 pandas = "^2.1.0"
+pulp = "^2.7.0"
+matplotlib = "^3.8.0"
+numpy = "^1.26.1"
 
 
 [build-system]
