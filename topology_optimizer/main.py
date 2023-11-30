@@ -19,7 +19,7 @@ from visualization import (
     visualize_node_allocation,
     visualize_node_topology_matrix_with_double_rows_per_country
 )
-from helper_functions import get_target_topology, calculate_nakamoto_coefficient
+from helper_functions import get_target_topology, calculate_nakamoto_coefficient, create_candidate_node_dataframe
 
 
 def visualize_input_data(network_data):
@@ -56,7 +56,13 @@ def main():
     """Main function to execute the analysis and visualization pipeline."""
     # Step 1: Input data
     from ic_topology_20230907 import df_nodes  # Loading node population data
-    
+    df_candidate_nodes = create_candidate_node_dataframe(node_provider ='Lionel Messi',
+                                                         data_center ='Buenos Aires 1',
+                                                         data_center_provider ='Peron Corporation',
+                                                         country = 'AR',
+                                                         is_sev = True,
+                                                         no_nodes = 0)
+
     subnet_limits = {
         "node_provider": 1,
         "data_center": 1,
@@ -65,9 +71,11 @@ def main():
     }
     network_topology = get_target_topology(subnet_limits)
 
-    network_data = prepare_data(
-        df_nodes, network_topology,
-        no_synthetic_countries=12, enforce_sev_constraint=True
+    network_data = prepare_data( df_nodes, 
+                                df_candidate_nodes,
+                                network_topology,
+                                no_synthetic_countries=12, 
+                                enforce_sev_constraint=True
     )
     
     # Step 2: Display input data

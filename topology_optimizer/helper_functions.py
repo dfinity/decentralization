@@ -60,8 +60,8 @@ def create_node_dataframe(df_nodes):
     for idx, row in df_nodes.iterrows():
         # Extract existing information
         node_provider = row['node_provider_name']
-        dc_id = row['dc_id'] 
-        dc_name = row['dc_name']  
+        dc_id = row['dc_id']  
+        owner = row['owner'] 
         region = row['region'].split(",")[1]  
         is_sev = is_sev_node_provider(node_provider)
         
@@ -69,7 +69,7 @@ def create_node_dataframe(df_nodes):
         new_record = {
             "node_provider": node_provider,
             "data_center": dc_id,  
-            "data_center_provider": dc_name,  
+            "data_center_provider": owner,  
             "country": region,
             "is_synthetic": False,  
             "is_sev":  is_sev
@@ -219,5 +219,31 @@ def get_subnet_limit(network_topology, subnet_index, attribute):
 def get_nakamoto_target(network_topology, subnet_index, attribute):
     column_name = f"nakamoto_target_{attribute}"
     return network_topology.at[subnet_index, column_name]
+
+def create_candidate_node_dataframe(node_provider,
+                                    data_center,
+                                    data_center_provider,
+                                    country,
+                                    is_sev,
+                                    no_nodes):
+    new_records = []
+    for _ in range(no_nodes):
+        # Create a new record with the desired fields
+        new_record = {
+            'node_provider': node_provider,
+            'data_center': data_center,
+            'data_center_provider': data_center_provider,
+            'country': country,
+            'is_synthetic': False,
+            "is_sev": is_sev
+            }
+        
+        # Append the new record to the list
+        new_records.append(new_record)
+    
+    # Create a new DataFrame using the list of new records
+    candidate_nodes = pd.DataFrame(new_records)
+    
+    return candidate_nodes
 
 
