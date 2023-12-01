@@ -26,3 +26,9 @@ Demo, that pulls that latest list of subnets and nodes from the Public Dashboard
 ```
 poetry run python3 ic_topology/main.py
 ```
+
+One must run topology_optimizer/main.py to get the ObjectValue as mentioned here: https://wiki.internetcomputer.org/wiki/Validation_of_Candidate_Node_Machines
+
+```
+poetry run python3 topology_optimizer/main.py
+```
