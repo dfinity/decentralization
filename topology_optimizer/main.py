@@ -70,6 +70,7 @@ def main():
         "country": 2
     }
     network_topology = get_target_topology(subnet_limits)
+    network_topology.loc[network_topology['subnet_size'] >= 28, 'subnet_limit_country'] = 3
 
     network_data = prepare_data( df_nodes, 
                                 df_candidate_nodes,
