@@ -20,36 +20,14 @@ def create_dataframe(node_list):
 def generate_synthetic_countries(no_synthetic_countries):
     return ['C' + str(i+1) for i in range(no_synthetic_countries)]
 
-def is_sev_node_provider(node_provider):
-    # List of specific node providers
-    sev_providers = [
-        "Accuset Solutions",
-        "Anonstake",
-        "Anypoint Pty Ltd",
-        "Aspire Properties",
-        "Coplus Limited",
-        "Exaion",
-        "Geodd Pvt Ltd",
-        "George Bassadone",
-        "Honeycomb Capital (Pty) Ltd",
-        "Icaria Systems Pty Ltd",
-        "Illusions In Art (Pty) Ltd",
-        "InfoObjects",
-        "Karel Frank",
-        "Lukas Helebrandt",
-        "Marc Johnson",
-        "Marvelous Web3",
-        "MB Patrankos šūvis",
-        "NoviSystems, LLC",
-        "Pindar Technology Limited",
-        "Rivram Inc",
-        "Wancloud limited",
-        "Wolkboer (Pty) Ltd",
-        "Zondax AG"
-    ]
+def is_sev_node_provider(node_provider, filename='sev_providers.csv'):
+    # Read the list of severe providers from a CSV file
+    df = pd.read_csv(filename)
+    sev_providers = df['provider_name'].tolist()  
     
     # Check if node_provider is in sev_providers
     return node_provider in sev_providers
+
 
 
 def create_node_dataframe(df_nodes):
