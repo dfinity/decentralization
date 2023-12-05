@@ -19,7 +19,7 @@ from visualization import (
     visualize_node_allocation,
     visualize_node_topology_matrix_with_double_rows_per_country
 )
-from helper_functions import get_target_topology, calculate_nakamoto_coefficient, create_candidate_node_dataframe
+from helper_functions import get_target_topology, calculate_nakamoto_coefficient, create_candidate_node_dataframe, get_node_pipeline
 
 
 def visualize_input_data(network_data):
@@ -56,6 +56,11 @@ def main():
     """Main function to execute the analysis and visualization pipeline."""
     # Step 1: Input data
     from ic_topology_20230907 import df_nodes  # Loading node population data
+    
+    # Load pipeline of nodes which is not yet in the registry 
+    df_node_pipeline = get_node_pipeline("node_pipeline.csv")
+    
+    # Define candidate nodes which you would like to add
     df_candidate_nodes = create_candidate_node_dataframe(node_provider ='Lionel Messi',
                                                          data_center ='Buenos Aires 1',
                                                          data_center_provider ='Peron Corporation',
@@ -63,6 +68,7 @@ def main():
                                                          is_sev = True,
                                                          no_nodes = 0)
 
+    # Set target topology 
     subnet_limits = {
         "node_provider": 1,
         "data_center": 1,
@@ -70,8 +76,10 @@ def main():
         "country": 2
     }
     network_topology = get_target_topology(subnet_limits)
+    network_topology.loc[network_topology['subnet_size'] >= 28, 'subnet_limit_country'] = 3
 
-    network_data = prepare_data( df_nodes, 
+    network_data = prepare_data(df_nodes, 
+                                df_node_pipeline,
                                 df_candidate_nodes,
                                 network_topology,
                                 no_synthetic_countries=12, 

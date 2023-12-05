@@ -224,4 +224,18 @@ def create_candidate_node_dataframe(node_provider,
     
     return candidate_nodes
 
-
+def get_node_pipeline(filename='node_pipeline.csv'): 
+    df_file = pd.read_csv(filename)
+    
+    dfs = []
+    for index, row in df_file.iterrows():
+        df = create_candidate_node_dataframe(node_provider=row['node_provider'],
+                                             data_center=row['data_center'],
+                                             data_center_provider=row['data_center_provider'],
+                                             country=row['country'],
+                                             is_sev=row['is_sev'],
+                                             no_nodes=row['no_nodes'])
+        dfs.append(df)
+    
+    df_node_pipeline = pd.concat(dfs, ignore_index=True)
+    return df_node_pipeline
