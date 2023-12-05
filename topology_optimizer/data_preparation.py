@@ -9,7 +9,12 @@ Created on Fri Sep  8 14:17:00 2023
 import pandas as pd
 from helper_functions import create_node_dataframe, generate_synthetic_countries, generate_synthetic_nodes
 
-def prepare_data(df_nodes, df_candidate_nodes, network_topology, no_synthetic_countries, enforce_sev_constraint):
+def prepare_data(df_nodes, 
+                 df_node_pipeline, 
+                 df_candidate_nodes, 
+                 network_topology, 
+                 no_synthetic_countries, 
+                 enforce_sev_constraint):
     # Preprocessing
     current_nodes = create_node_dataframe(df_nodes)
     
@@ -21,7 +26,7 @@ def prepare_data(df_nodes, df_candidate_nodes, network_topology, no_synthetic_co
     current_nodes.loc[current_nodes['node_provider'].str.startswith('DFINITY'), 'node_provider'] = "DFINITY"
 
     # Combnine existing and candidate nodes
-    current_nodes = pd.concat([current_nodes, df_candidate_nodes], ignore_index=True)
+    current_nodes = pd.concat([current_nodes, df_node_pipeline, df_candidate_nodes], ignore_index=True)
 
     current_countries = list(current_nodes['country'].unique())
     synthetic_countries = generate_synthetic_countries(no_synthetic_countries)
