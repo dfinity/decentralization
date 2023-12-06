@@ -1,7 +1,4 @@
 node_provider,data_center,data_center_provider,country,is_sev,no_nodes
-"Accuset Solutions","gn1","Yotta","IN",True,6
-"Geodd Pvt Ltd","cm1","OrionStellar","LK",True,4
-"Neptune Partners","kr1","KT","KR",True,25
 "Bohatyrov Volodymyr","ma1","Ginernet","ES",True,1
 "Bohatyrov Volodymyr","ba1","Online","PT",True,1
 "Bohatyrov Volodymyr","bn1","Master Internet","CZ",True,1
@@ -37,3 +34,7 @@ node_provider,data_center,data_center_provider,country,is_sev,no_nodes
 "Vladyslav Popov","ta2","Telia DC","EE",True,1
 "Vladyslav Popov","si1","Bacloud","LT",True,1
 "Vladyslav Popov","ma2","Espacio Rack","ES",True,1
+"Accuset Solutions", gn1, Yotta, IN, True, 6
+"Neptune Partners", kr1, KT, KR, True, 25
+"Geodd Pvt Ltd", cm1, OrionStellar, LK, True, 4
+
