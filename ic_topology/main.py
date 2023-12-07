@@ -49,9 +49,6 @@ def main():
     script_dir = Path(__file__).resolve().parent  # Get the directory where the script is located
     data_dir = script_dir.parent / 'data'  # Path to the ../data directory
 
-    # Check if the data directory exists, create if it doesn't
-    data_dir.mkdir(parents=True, exist_ok=True)
-
     # Full path for the file
     file_path = data_dir / filename
 

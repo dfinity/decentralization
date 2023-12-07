@@ -21,14 +21,15 @@ And you're ready to rock.
 
 # Usage
 
-Demo, that pulls that latest list of subnets and nodes from the Public Dashboard API, and builds two Pandas DataFrames:
+Step 1: Pull the latest set of current nodes from the IC dashboard. This date set is then stored in ./data/current_nodes[date]_[time].csv
 
 ```
 poetry run python3 ic_topology/main.py
 ```
 
-One must run topology_optimizer/main.py to get the ObjectValue as mentioned here: https://wiki.internetcomputer.org/wiki/Validation_of_Candidate_Node_Machines
+Step 2: Run the node allocation optimizer by calling topology_optimizer/main.py to get the ObjectValue as mentioned here: https://wiki.internetcomputer.org/wiki/Validation_of_Candidate_Node_Machines
 
+Please note: You need to pass the previously generated csv file with the current nodes (stored in ./data) as an argument. 
 ```
-poetry run python3 topology_optimizer/main.py
+poetry run python3 topology_optimizer/main.py ./data/current_nodes_[date]_[time].csv
 ```
