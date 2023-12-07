@@ -12,6 +12,9 @@ the resulting node allocation and Nakamoto coefficients on a subnet level.
 """
 
 import time
+import os
+import pandas as pd
+import argparse
 from data_preparation import prepare_data
 from linear_solver import solver_model_minimize_nodes_by_subnet_limit
 from visualization import (
@@ -52,13 +55,13 @@ def visualize_model_output(network_data, solver_result, elapsed_time):
         )
 
 
-def main():
+def main(file_path_current_nodes):
     """Main function to execute the analysis and visualization pipeline."""
     # Step 1: Input data
-    from ic_topology_20230907 import df_nodes  # Loading node population data
+    df_nodes = pd.read_csv(file_path_current_nodes)
     
     # Load pipeline of nodes which is not yet in the registry 
-    df_node_pipeline = get_node_pipeline("node_pipeline.csv")
+    df_node_pipeline = get_node_pipeline()
     
     # Define candidate nodes which you would like to add
     df_candidate_nodes = create_candidate_node_dataframe(node_provider ='Lionel Messi',
@@ -100,4 +103,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Process node data')
+    parser.add_argument('file_path', type=str, help='Path to the node data file')
+
+    args = parser.parse_args()
+    main(args.file_path)

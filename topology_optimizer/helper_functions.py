@@ -7,6 +7,8 @@ Created on Fri Sep  8 14:15:51 2023
 """
 
 import pandas as pd
+import os
+from pathlib import Path
 
 
 ###############################################################################
@@ -20,9 +22,11 @@ def create_dataframe(node_list):
 def generate_synthetic_countries(no_synthetic_countries):
     return ['C' + str(i+1) for i in range(no_synthetic_countries)]
 
-def is_sev_node_provider(node_provider, filename='sev_providers.csv'):
+def is_sev_node_provider(node_provider):
     # Read the list of severe providers from a CSV file
-    df = pd.read_csv(filename)
+    script_dir = Path(__file__).resolve().parent  # Get the directory where the script is located
+    data_dir = script_dir.parent / 'data'  # Path to the ../data directory
+    df = pd.read_csv(os.path.join(data_dir, 'sev_providers.csv' ))
     sev_providers = df['provider_name'].tolist()  
     
     # Check if node_provider is in sev_providers
@@ -225,7 +229,9 @@ def create_candidate_node_dataframe(node_provider,
     return candidate_nodes
 
 def get_node_pipeline(filename='node_pipeline.csv'): 
-    df_file = pd.read_csv(filename)
+    script_dir = Path(__file__).resolve().parent  # Get the directory where the script is located
+    data_dir = script_dir.parent / 'data'  # Path to the ../data directory
+    df_file = pd.read_csv(os.path.join(data_dir, filename ))
     
     dfs = []
     for index, row in df_file.iterrows():
