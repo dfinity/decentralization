@@ -61,8 +61,7 @@ def main(file_path_current_nodes):
     df_nodes = pd.read_csv(file_path_current_nodes)
     
     # Load pipeline of nodes which is not yet in the registry 
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    df_node_pipeline = get_node_pipeline(os.path.join(script_dir, 'node_pipeline.csv'))
+    df_node_pipeline = get_node_pipeline()
     
     # Define candidate nodes which you would like to add
     df_candidate_nodes = create_candidate_node_dataframe(node_provider ='Lionel Messi',
