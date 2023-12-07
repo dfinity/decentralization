@@ -7,6 +7,7 @@ Created on Fri Sep  8 14:15:51 2023
 """
 
 import pandas as pd
+import os
 
 
 ###############################################################################
@@ -20,9 +21,10 @@ def create_dataframe(node_list):
 def generate_synthetic_countries(no_synthetic_countries):
     return ['C' + str(i+1) for i in range(no_synthetic_countries)]
 
-def is_sev_node_provider(node_provider, filename='sev_providers.csv'):
+def is_sev_node_provider(node_provider):
     # Read the list of severe providers from a CSV file
-    df = pd.read_csv(filename)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    df = pd.read_csv(os.path.join(script_dir, 'sev_providers.csv' ))
     sev_providers = df['provider_name'].tolist()  
     
     # Check if node_provider is in sev_providers
