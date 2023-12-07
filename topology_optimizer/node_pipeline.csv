@@ -1,4 +1,40 @@
 node_provider,data_center,data_center_provider,country,is_sev,no_nodes
+"Bohatyrov Volodymyr","ma1","Ginernet","ES",True,1
+"Bohatyrov Volodymyr","ba1","Online","PT",True,1
+"Bohatyrov Volodymyr","bn1","Master Internet","CZ",True,1
+"Bohatyrov Volodymyr","si1","Bacloud","LT",True,1
+"Bohatyrov Volodymyr","ta1","InfoNetDC","EE",True,1
+"Bohatyrov Volodymyr","rg3","Nano","LV",True,1
+"Bohatyrov Volodymyr","wa2","Central Tower DC","PL",True,1
+"Artem Horodyskyi","ma1","Ginernet","ES",True,1
+"Artem Horodyskyi","pa2","Coolhousing","CZ",True,1
+"Artem Horodyskyi","bt1","Baltneta","LT",True,1
+"Artem Horodyskyi","rg3","Nano","LV",True,1
+"Artem Horodyskyi","wy1","Mevspace","PL",True,1
+"Artem Horodyskyi","li1","Dotsi","PT",True,1
+"Artem Horodyskyi","ta2","Telia DC","EE",True,1
+"Ivanov Oleksandr","ta2","Telia DC","EE",True,1
+"Ivanov Oleksandr","rg1","DEAC","LV",True,1
+"Ivanov Oleksandr","pa1","MasterDC","CZ",True,1
+"Ivanov Oleksandr","bt1","Baltneta","LT",True,1
+"Ivanov Oleksandr","ma1","Generate","ES",True,1
+"Ivanov Oleksandr","wy1","Mevspace","PL",True,1
+"Ivanov Oleksandr","li1","Dotsi","PT",True,1
+"Maksym Ishchenko","ba1","Online","PT",True,1
+"Maksym Ishchenko","bt1","Baltneta","LT",True,1
+"Maksym Ishchenko","rg1","DEAC","LV",True,1
+"Maksym Ishchenko","bn1","Master Interner","CZ",True,1
+"Maksym Ishchenko","ma1","Ginernet","ES",True,1
+"Maksym Ishchenko","wa2","Central Tower DC","PL",True,1
+"Maksym Ishchenko","ta1","Infonet DC","EE",True,1
+"Vladyslav Popov","wy1","Mevspace","PL",True,1
+"Vladyslav Popov","rg1","DEAC","LV",True,1
+"Vladyslav Popov","li1","Dotsi","PT",True,1
+"Vladyslav Popov","pa2","Coolhousing","CZ",True,1
+"Vladyslav Popov","ta2","Telia DC","EE",True,1
+"Vladyslav Popov","si1","Bacloud","LT",True,1
+"Vladyslav Popov","ma2","Espacio Rack","ES",True,1
 "Accuset Solutions", gn1, Yotta, IN, True, 6
 "Neptune Partners", kr1, KT, KR, True, 25
 "Geodd Pvt Ltd", cm1, OrionStellar, LK, True, 4
+
