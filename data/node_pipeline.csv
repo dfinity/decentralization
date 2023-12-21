@@ -37,7 +37,7 @@ node_provider,data_center,data_center_provider,country,is_sev,no_nodes
 "Accuset Solutions", "gn1","Yotta","IN",True,6
 "Neptune Partners", "kr1","KT","KR",True,25
 "Karel Frank","sc1","NEXTDC","AU",True,1
-"Anypoint PTY LTD","sc1","NEXTDC","AU",True,6
+"Anypoint PTY LTD","sc1","NEXTDC","AU",True,7
 "Geodd Pvt Ltd", "cm1","OrionStellar","LK",True,4
 "Krishna Enterprises","pl2","Yotta","IN",True,15
 "GeoNodes","cr1","Navegalo","CR",True,8
