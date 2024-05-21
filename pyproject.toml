@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-requests = "^2.31.0"
+requests = "^2.32.0"
 pandas = "1.5"
 pulp = "^2.7.0"
 matplotlib = "^3.8.0"
