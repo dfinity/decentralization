@@ -228,11 +228,23 @@ def create_candidate_node_dataframe(node_provider,
     
     return candidate_nodes
 
-def get_node_pipeline(filename='node_pipeline.csv'): 
+def get_node_pipeline(filename='node_pipeline.csv'):
     script_dir = Path(__file__).resolve().parent  # Get the directory where the script is located
     data_dir = script_dir.parent / 'data'  # Path to the ../data directory
-    df_file = pd.read_csv(os.path.join(data_dir, filename ))
+    file_path = os.path.join(data_dir, filename)
     
+    # Read the CSV file
+    try:
+        df_file = pd.read_csv(file_path)
+    except pd.errors.EmptyDataError:
+        #print("CSV file is empty. Returning an empty DataFrame.")
+        return pd.DataFrame()  # Return an empty DataFrame if the file is empty
+    
+    # Check if the DataFrame is empty
+    if df_file.empty:
+        print("No data to process. Returning an empty DataFrame.")
+        return pd.DataFrame()
+
     dfs = []
     for index, row in df_file.iterrows():
         df = create_candidate_node_dataframe(node_provider=row['node_provider'],
@@ -242,6 +254,11 @@ def get_node_pipeline(filename='node_pipeline.csv'):
                                              is_sev=row['is_sev'],
                                              no_nodes=row['no_nodes'])
         dfs.append(df)
-    
-    df_node_pipeline = pd.concat(dfs, ignore_index=True)
+
+    if dfs:
+        df_node_pipeline = pd.concat(dfs, ignore_index=True)
+    else:
+        print("No data frames created. Returning an empty DataFrame.")
+        df_node_pipeline = pd.DataFrame()
+        
     return df_node_pipeline
