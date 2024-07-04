@@ -242,7 +242,7 @@ def get_node_pipeline(filename='node_pipeline.csv'):
     
     # Check if the DataFrame is empty
     if df_file.empty:
-        print("No data to process. Returning an empty DataFrame.")
+        #print("No data to process. Returning an empty DataFrame.")
         return pd.DataFrame()
 
     dfs = []
