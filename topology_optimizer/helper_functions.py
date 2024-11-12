@@ -149,7 +149,7 @@ def get_target_topology(subnet_limits):
     data = {
         "subnet_type": ["NNS", "SNS", "Fiduciary", "II", "ECDSA signing", "ECDSA backup",
                  "Bitcoin canister", "European Subnet", "Swiss Subnet"] + ["Application"] * 31,
-        "subnet_size": [43, 34, 28, 28, 28, 28, 13, 13, 13] + [13] * 31,
+        "subnet_size": [43, 34, 34, 34, 28, 28, 13, 13, 13] + [13] * 31,
         "is_sev": [False, False, False, True, True, True, False, True, True] + [False] * 31
     }
     df = pd.DataFrame(data)
