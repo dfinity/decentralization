@@ -112,8 +112,8 @@ def visualize_node_topology_matrix_with_double_rows_per_country(network_data):
     current_colors = [color_set_1[i%20] if i%2 == 0 else color_set_2[i%20] for i in range(len(country_current))]
     color_map = dict(zip(country_current, current_colors))
     
-    # Determine matrix width (limit to 50) and height
-    matrix_width = min(country_counts.iloc[0] // 2, 50)
+    # Determine matrix width (limit to 60) and height
+    matrix_width = min(country_counts.iloc[0] // 2, 60)
     max_subnet_size = max(network_data['network_topology']['subnet_size'])
     matrix_height = max(max_subnet_size, len(country_current) * 2)
     
@@ -234,7 +234,7 @@ def visualize_node_topology_matrix(network_data, dimension, display_subnet_slots
     current_colors = [color_set_1[i%20] if i%2 == 0 else color_set_2[i%20] for i in range(len(current_dimensions))]
     color_map = dict(zip(current_dimensions, current_colors))
 
-    max_width = 50
+    max_width = 60
     matrix_width = min(dimension_counts.iloc[0], max_width)
     max_subnet_size = max(network_data['network_topology']['subnet_size'])
     matrix_height = max(max_subnet_size, len(current_dimensions))
