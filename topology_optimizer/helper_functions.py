@@ -144,55 +144,41 @@ def calculate_nakamoto_coefficient(result):
     return nakamoto_result
 
 
-def get_target_topology(subnet_limits):
-    # Step 1: Create a DataFrame with the static data
-    data = {
-        "subnet_type": ["NNS", "SNS", "Fiduciary", "II", "ECDSA signing", "ECDSA backup",
-                 "Bitcoin canister", "European Subnet", "Swiss Subnet"] + ["Application"] * 31,
-        "subnet_size": [43, 34, 34, 34, 28, 28, 13, 13, 13] + [13] * 31,
-        "is_sev": [False, False, False, True, True, True, False, True, True] + [False] * 31
-    }
-    df = pd.DataFrame(data)
-    
-    # Step 2: Populate DataFrame with subnet_limit_xxx and nakamoto_xxx columns
-    attribute_list = ["node_provider", "data_center", "data_center_provider", "country"]
-    
-    for attr in attribute_list:
-        subnet_limit_col_name = f"subnet_limit_{attr}"
-        nakamoto_col_name = f"nakamoto_target_{attr}"
-        
-        # Add subnet_limit column based on provided subnet_limits record
-        df[subnet_limit_col_name] = subnet_limits[attr]
-        
-        # Add nakamoto column based on the provided formula
-        df[nakamoto_col_name] = (df["subnet_size"] // (3 * df[subnet_limit_col_name])) + 1
-        
-    return df
+def get_target_topology(file_path):
 
-def get_Sep23_topology(subnet_limits):
-    # Step 1: Create a DataFrame with the static data
-    data = {
-        "subnet_type": ["NNS", "SNS", "Fiduciary (also ECDSA signing)", "II",
-                 "Bitcoin canister"] + ["Application"] * 31,
-        "subnet_size": [40, 34, 28, 28, 13] + [13] * 31,
-        "is_sev": [False, False, True, True, False] + [False] * 31
-    }
-    df = pd.DataFrame(data)
-    
-    # Step 2: Populate DataFrame with subnet_limit_xxx and nakamoto_xxx columns
+     # Read the CSV file
+    df = pd.read_csv(file_path)
+
+    # Ensure correct data types
+    df['is_sev'] = df['is_sev'].astype(bool)
+    df['number_of_subnets'] = df['number_of_subnets'].astype(int)
+    df['subnet_size'] = df['subnet_size'].astype(int)
+
+    # Expand rows based on 'number_of_subnets'
+    df_expanded = df.loc[df.index.repeat(df['number_of_subnets'])].copy()
+
+    # Reset index after expansion
+    df_expanded.reset_index(drop=True, inplace=True)
+
+    # Drop the 'number_of_subnets' column as it's no longer needed
+    df_expanded.drop(columns='number_of_subnets', inplace=True)
+
+    # List of attributes to calculate Nakamoto coefficients for
     attribute_list = ["node_provider", "data_center", "data_center_provider", "country"]
-    
+
+    # Calculate Nakamoto coefficients
     for attr in attribute_list:
         subnet_limit_col_name = f"subnet_limit_{attr}"
         nakamoto_col_name = f"nakamoto_target_{attr}"
-        
-        # Add subnet_limit column based on provided subnet_limits record
-        df[subnet_limit_col_name] = subnet_limits[attr]
-        
-        # Add nakamoto column based on the provided formula
-        df[nakamoto_col_name] = (df["subnet_size"] // (3 * df[subnet_limit_col_name])) + 1
-        
-    return df
+
+        # Ensure the subnet limit columns are of integer type
+        df_expanded[subnet_limit_col_name] = df_expanded[subnet_limit_col_name].astype(int)
+
+        # Calculate the Nakamoto coefficient using the provided formula
+        df_expanded[nakamoto_col_name] = (df_expanded["subnet_size"] // (3 * df_expanded[subnet_limit_col_name])) + 1
+
+    return df_expanded
+
 
 def get_subnet_limit(network_topology, subnet_index, attribute):
     column_name = f"subnet_limit_{attribute}"

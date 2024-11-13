@@ -120,7 +120,103 @@ def add_attribute_subnet_limit_constraints(network_data, result, attribute):
         attribute_subnet_limit = get_subnet_limit(network_topology, subnet_idx, attribute)
         for attribute_idx in attribute_indices:
             prob += attribute_allocations[attribute_idx][subnet_idx] <= attribute_subnet_limit, f"MaxNodesPerAttribute_{attribute}_{attribute_idx}_Subnet_{subnet_idx}"
-   
+
+
+def add_attribute_subnet_exact_constraints(network_data, result, attribute, attribute_value, subnet_idx_target):
+    """
+    Ensures that only nodes with a specific attribute_value (e.g., CH) are allocated to a particular subnet,
+    by setting the allocation for other attribute values to zero.
+    """
+
+    prob = result['prob']
+    attribute_indices = network_data[f"{attribute}_indices"]
+    attribute_list = network_data[f"{attribute}_list"]
+    attribute_allocations = result[f"{attribute}_allocations"]
+
+
+    # Find the index of the desired attribute value
+    try:
+        attribute_value_idx = attribute_list.index(attribute_value)
+    except ValueError:
+        raise ValueError(f"Attribute value '{attribute_value}' not found in attribute list for '{attribute}'.")
+
+    # For all other attribute values, set their allocation to the subnet to zero
+    for attribute_idx in attribute_indices:
+        if attribute_idx != attribute_value_idx:
+            prob += attribute_allocations[attribute_idx][subnet_idx_target] == 0, \
+                f"Subnet_{subnet_idx_target}_No_{attribute}_{attribute_list[attribute_idx]}"
+           
+def add_attribute_subnet_allowed_values_constraints(network_data, result, attribute, allowed_values, subnet_idx_target):
+    """
+    Ensures that only nodes with attribute values in allowed_values are allocated to a particular subnet,
+    by setting the allocation for other attribute values to zero.
+    """
+    prob = result['prob']
+    attribute_indices = network_data[f"{attribute}_indices"]
+    attribute_list = network_data[f"{attribute}_list"]
+    attribute_allocations = result[f"{attribute}_allocations"]
+
+    # Find indices of allowed attribute values
+    allowed_indices = [attribute_list.index(value) for value in allowed_values if value in attribute_list]
+
+    # For attribute values not in allowed_indices, set their allocation to the subnet to zero
+    for attribute_idx in attribute_indices:
+        if attribute_idx not in allowed_indices:
+            prob += attribute_allocations[attribute_idx][subnet_idx_target] == 0, \
+                f"Subnet_{subnet_idx_target}_No_{attribute}_{attribute_list[attribute_idx]}"
+  
+
+def add_swiss_subnet_country_constraint(network_data, result):
+    """
+    Enforces that all nodes allocated to the 'Swiss Subnet' have country code 'CH'.
+
+    Parameters:
+    - network_data: A dictionary containing network data, including 'network_topology'.
+    - result: A dictionary containing the LP problem and variables.
+    """
+    network_topology = network_data['network_topology']
+    attribute = 'country'
+    allowed_values = ['CH'] 
+
+    # Find the indices where 'subnet_type' is 'Swiss Subnet'
+    subnet_indices = network_topology.index[network_topology['subnet_type'] == 'Swiss Subnet']
+
+    if not subnet_indices.empty:
+        subnet_idx_target = subnet_indices[0]
+        add_attribute_subnet_allowed_values_constraints(
+            network_data, result, attribute, allowed_values, subnet_idx_target)
+    else:
+        raise ValueError("Swiss Subnet not found in network_topology")
+
+
+def add_european_subnet_country_constraint(network_data, result):
+    """
+    Enforces that only nodes from European countries are allocated to the 'European Subnet'.
+
+    Parameters:
+    - network_data: A dictionary containing network data, including 'network_topology'.
+    - result: A dictionary containing the LP problem and variables.
+    """
+    network_topology = network_data['network_topology']
+    attribute = 'country'
+    allowed_values = [
+        'AL', 'AD', 'AT', 'BE', 'BA', 'BG', 'HR', 'CY', 'CZ', 'DK',
+        'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IS', 'IE', 'IT', 'XK', 
+        'LV', 'LI', 'LT', 'LU', 'MT', 'MD', 'MC', 'ME', 'NL', 'MK', 
+        'NO', 'PL', 'PT', 'RO', 'SM', 'RS', 'SK', 'SI', 'ES', 'SE', 
+        'CH', 'UA', 'GB', 'VA', 'UK'
+        ]
+
+    # Find the indices where 'subnet_type' is 'European Subnet'
+    subnet_indices = network_topology.index[network_topology['subnet_type'] == 'European Subnet']
+
+    if not subnet_indices.empty:
+        subnet_idx_target = subnet_indices[0]  # Assuming there's only one European Subnet
+        add_attribute_subnet_allowed_values_constraints(network_data, result, attribute, allowed_values, subnet_idx_target)
+    else:
+        raise ValueError("European Subnet not found in network_topology")
+
+
 
 def add_attribute_nakamoto_constraints(network_data, result, attribute):
     subnet_indices = network_data['subnet_indices']
@@ -252,7 +348,7 @@ def define_objective_function_model_minimize_nodes_by_diversification_target(net
 
 
 
-def solver_model_minimize_nodes_by_subnet_limit(network_data):
+def solver_model_minimize_nodes_by_subnet_limit(network_data, subnet_idx_target=None):
     result = {}
     
     # Initialize the LP problem
@@ -269,8 +365,10 @@ def solver_model_minimize_nodes_by_subnet_limit(network_data):
     add_attribute_subnet_limit_constraints(network_data, result, 'node_provider')
     add_attribute_subnet_limit_constraints(network_data, result, 'data_center')
     add_attribute_subnet_limit_constraints(network_data, result, 'data_center_provider')
-    add_attribute_subnet_limit_constraints(network_data, result, 'country')
-        
+    add_attribute_subnet_limit_constraints(network_data, result, 'country')  
+    add_swiss_subnet_country_constraint(network_data, result)
+    add_european_subnet_country_constraint(network_data, result)
+          
     # define objective
     define_objective_function_model_minimize_nodes_by_diversification_target(network_data, result)
     
