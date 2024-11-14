@@ -71,22 +71,15 @@ def main(file_path_current_nodes):
                                                          is_sev = True,
                                                          no_nodes = 0)
 
-    # Set target topology 
-    subnet_limits = {
-        "node_provider": 1,
-        "data_center": 1,
-        "data_center_provider": 1,
-        "country": 2
-    }
-    network_topology = get_target_topology(subnet_limits)
-    network_topology.loc[network_topology['subnet_size'] >= 28, 'subnet_limit_country'] = 3
+    # Get target topology 
+    network_topology = get_target_topology('../data/target_topology.csv')
 
     network_data = prepare_data(df_nodes, 
                                 df_node_pipeline,
                                 df_candidate_nodes,
                                 network_topology,
                                 no_synthetic_countries=12, 
-                                enforce_sev_constraint=True
+                                enforce_sev_constraint=True, 
     )
     
     # Step 2: Display input data
