@@ -78,7 +78,7 @@ def main(file_path_current_nodes):
                                 df_node_pipeline,
                                 df_candidate_nodes,
                                 network_topology,
-                                no_synthetic_countries=12, 
+                                no_synthetic_countries=2, 
                                 enforce_sev_constraint=True, 
     )
     
