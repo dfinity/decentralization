@@ -1,0 +1,16 @@
+node_id,alertname,dc_id,dc_name,guestos_version,ip_address,ipv4_connectivity_status,node_hardware_generation,node_operator_id,node_provider_id,node_provider_name,node_type,owner,region,status,subnet_id
+node-df-1,,dc-df,dc-df,12345,192.168.0.1,,,node-operator-df,DFINITY,DFINITY,REPLICA,dc-owner-0,",COUNTRY-DF,",UP,subnet-1
+node-df-2,,dc-df,dc-df,12345,192.168.0.1,,,node-operator-df,DFINITY,DFINITY,REPLICA,dc-owner-0,",COUNTRY-DF,",UP,subnet-2
+node-df-3,,dc-df,dc-df,12345,192.168.0.1,,,node-operator-df,DFINITY,DFINITY,REPLICA,dc-owner-0,",COUNTRY-DF,",UP,subnet-3
+node-1,,dc-1,dc-1,12345,192.168.0.1,,,node-operator-1,node-provider-1,node-provider-1,REPLICA,dc-owner-1,",COUNTRY-1,",UP,subnet-1
+node-2,,dc-1,dc-1,12345,192.168.0.1,,,node-operator-1,node-provider-1,node-provider-1,REPLICA,dc-owner-1,",COUNTRY-1,",UP,subnet-2
+node-3,,dc-1,dc-1,12345,192.168.0.1,,,node-operator-1,node-provider-1,node-provider-1,REPLICA,dc-owner-1,",COUNTRY-1,",UP,
+node-4,,dc-1,dc-1,12345,192.168.0.1,,,node-operator-1,node-provider-1,node-provider-1,REPLICA,dc-owner-1,",COUNTRY-1,",UP,
+node-11,,dc-2,dc-2,12345,192.168.0.1,,,node-operator-2,node-provider-2,node-provider-2,REPLICA,dc-owner-2,",COUNTRY-2,",UP,subnet-1
+node-12,,dc-2,dc-2,12345,192.168.0.1,,,node-operator-2,node-provider-2,node-provider-2,REPLICA,dc-owner-2,",COUNTRY-2,",UP,subnet-2
+node-13,,dc-2,dc-2,12345,192.168.0.1,,,node-operator-2,node-provider-2,node-provider-2,REPLICA,dc-owner-2,",COUNTRY-2,",UP,subnet-3
+node-14,,dc-2,dc-2,12345,192.168.0.1,,,node-operator-2,node-provider-2,node-provider-2,REPLICA,dc-owner-2,",COUNTRY-2,",UP,
+node-111,,dc-3,dc-3,12345,192.168.0.1,,,node-operator-3,node-provider-3,node-provider-3,REPLICA,dc-owner-3,",COUNTRY-3,",UP,
+node-112,,dc-3,dc-3,12345,192.168.0.1,,,node-operator-3,node-provider-3,node-provider-3,REPLICA,dc-owner-3,",COUNTRY-3,",UP,
+node-113,,dc-3,dc-3,12345,192.168.0.1,,,node-operator-3,node-provider-3,node-provider-3,REPLICA,dc-owner-3,",COUNTRY-3,",UP,subnet-3
+node-114,,dc-3,dc-3,12345,192.168.0.1,,,node-operator-3,node-provider-3,node-provider-3,REPLICA,dc-owner-3,",COUNTRY-3,",UP,

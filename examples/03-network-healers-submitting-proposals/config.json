@@ -1,0 +1,14 @@
+{
+  "nodes_file": "./examples/03-network-healers-submitting-proposals/data/network_data/data.csv",
+  "topology_file": "./examples/03-network-healers-submitting-proposals/data/topology/topology.csv",
+  "node_pipeline_file": "./examples/03-network-healers-submitting-proposals/data/node_pipelines/pipeline.csv",
+  "blacklist_file": "./examples/03-network-healers-submitting-proposals/data/blacklist.yaml",
+  "scenario": "./examples/03-network-healers-submitting-proposals/data/cluster_scenarios/clusters.json",
+  "special_limits_file": "./examples/03-network-healers-submitting-proposals/data/special_limits.json",
+  "mode": "minimize_node_swaps",
+  "no_synthetic_countries": 6,
+  "enforce_sev_constraint": false,
+  "enforce_health_constraint": true,
+  "enforce_blacklist_constraint": false,
+  "enforce_per_node_provider_assignation": false
+}

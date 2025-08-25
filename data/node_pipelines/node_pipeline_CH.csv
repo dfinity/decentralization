@@ -1,0 +1,7 @@
+node_id,node_provider,data_center,data_center_provider,country,is_sev
+pipeline_0,CH_synthetic_np_0,CH_synthetic_dc_0,CH_synthetic_dcp_0,CH,TRUE
+pipeline_1,CH_synthetic_np_1,CH_synthetic_dc_1,CH_synthetic_dcp_1,CH,TRUE
+pipeline_2,CH_synthetic_np_2,CH_synthetic_dc_2,CH_synthetic_dcp_2,CH,TRUE
+pipeline_3,CH_synthetic_np_3,CH_synthetic_dc_3,CH_synthetic_dcp_3,CH,TRUE
+pipeline_4,CH_synthetic_np_4,CH_synthetic_dc_4,CH_synthetic_dcp_4,CH,TRUE
+pipeline_5,CH_synthetic_np_5,CH_synthetic_dc_5,CH_synthetic_dcp_5,CH,TRUE

@@ -1,0 +1,2 @@
+node_id,node_provider,data_center,data_center_provider,blacklist_reason
+node-1,node-provider-1,dc-1,dc-owner-1,node_id == node-1

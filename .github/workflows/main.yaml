@@ -1,0 +1,54 @@
+name: Target topology tool QA
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-assurance:
+    name: Run quality assurance checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore Poetry cache
+        id: poetry-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-cache
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Run image
+        uses: abatilo/actions-poetry@v3
+        with:
+          poetry-version: 2.1.2 
+
+      - name: Install poetry deps
+        shell: bash
+        run: |
+          poetry install --no-interaction --no-root
+      
+      - uses: astral-sh/ruff-action@v3
+
+      - name: Run the tests
+        shell: bash
+        run: |
+          make test
+
+      - name: Save Poetry cache (only on main)
+        if: github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-cache
+          

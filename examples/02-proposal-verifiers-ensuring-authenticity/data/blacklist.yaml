@@ -1,0 +1,4 @@
+features:
+  - feature: node_id
+    value: node-1
+    explanation: "Node-id-1 has to be redeployed so we have to ofboard it of the network."
