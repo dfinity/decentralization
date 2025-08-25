@@ -1,0 +1,55 @@
+[
+  {
+    "subnet_id": "subnet-1",
+    "subnet_type": "Application",
+    "unchanged": [
+      {
+        "node_id": "node-df-1",
+        "node_provider": "DFINITY",
+        "change_type": null
+      },
+      {
+        "node_id": "node-11",
+        "node_provider": "node-provider-2",
+        "change_type": null
+      }
+    ],
+    "removed": [
+      {
+        "node_id": "node-1",
+        "node_provider": "node-provider-1",
+        "change_type": "dropped"
+      }
+    ],
+    "added": [
+      {
+        "node_id": "node-3",
+        "node_provider": "node-provider-1",
+        "change_type": "newly_assigned"
+      }
+    ]
+  },
+  {
+    "subnet_id": "subnet-2",
+    "subnet_type": "Application",
+    "unchanged": [
+      {
+        "node_id": "node-df-2",
+        "node_provider": "DFINITY",
+        "change_type": null
+      },
+      {
+        "node_id": "node-2",
+        "node_provider": "node-provider-1",
+        "change_type": null
+      },
+      {
+        "node_id": "node-12",
+        "node_provider": "node-provider-2",
+        "change_type": null
+      }
+    ],
+    "removed": [],
+    "added": []
+  }
+]

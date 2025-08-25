@@ -1,0 +1,16 @@
+# Build/output artifacts
+output/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+.env/
+
+# IDE/editor metadata
+.vscode/
+.idea/
+

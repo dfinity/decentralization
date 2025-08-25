@@ -1,0 +1,3 @@
+subnet_type,subnet_id,number_of_subnets,subnet_size,is_sev,subnet_limit_node_provider,subnet_limit_data_center,subnet_limit_data_center_provider,subnet_limit_country
+Application,subnet-1,1,4,FALSE,1,1,1,2
+Application,subnet-2,1,4,FALSE,1,1,1,2

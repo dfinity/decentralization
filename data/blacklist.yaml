@@ -1,0 +1,36 @@
+# This file is used for cordoining ceratin node features
+# which are used while managing subnets.
+# The full list of features can be found here:
+# https://github.com/dfinity/dre/blob/main/rs/ic-management-types/src/lib.rs#L317-L324
+
+features:
+  - feature: node_provider
+    value: qsdw4-ao5ye-6rtq4-y3zhm-icjbj-lutd2-sbejz-4ajqz-pcflr-xrhsg-jae
+    explanation: "Carbon12 is selling its nodes to DEF: https://forum.dfinity.org/t/def-acquiring-nodes-from-carbon12/47236/2"
+  - feature: node_provider
+    value: dnpkk-x67ir-zwcyz-fkgzz-547t7-papxf-zby5t-i2log-uodsf-pcizd-jae
+    explanation: "Still hasn't completed the audit"
+  # - feature: node_id
+  #   value: atjbz-kcjz7-y4mgn-t5wqp-3emfk-6mtlx-ln5i7-4pixf-ocjgh-hfu77-bqe
+  #   explanation: "Testing"
+  # - feature: node_id
+  #   value: if2wa-juqxh-ii2v2-kzwry-3sgof-lqya5-j7o3s-ukvl6-ad4lz-ihrls-7qe
+  #   explanation: "Testing"
+  # - feature: node_id
+  #   value: oobdg-4ugoj-vv6lz-ytrmu-ckcnh-3d654-rlds3-jdabb-pr2e2-z4bfx-zqe
+  #   explanation: "Testing"
+  # - feature: node_id
+  #   value: pekym-jis5l-i3ucx-gujvl-ncj7j-7xk7k-uwwkn-qshzy-z765w-rjwdn-aqe
+  #   explanation: "Testing"
+  # - feature: node_id
+  #   value: pqcqa-fs3ly-y7v77-4faa5-jzuay-5i737-t3olr-w5o4y-7gkog-zqan3-7qe
+  #   explanation: "Testing"
+  # - feature: node_id
+  #   value: rq2bj-ek3yy-mjj6s-zewtq-zzke4-u4zix-tz2xd-xigpz-s5hih-4wpmt-iqe
+  #   explanation: "Testing"
+  # - feature: node_id
+  #   value: tgbmf-2jayg-jhoty-cgdle-jezqv-vxaly-pom4f-vnhzr-jvxdd-3yoyo-zqe
+  #   explanation: "Testing"
+  # - feature: node_id
+  #   value: uao44-6xaz7-xmjyv-wxzqn-fawuf-hpz34-d7ea4-2ft3d-znzye-k246e-cqe
+  #   explanation: "Testing"
