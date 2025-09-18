@@ -104,7 +104,7 @@ def prepare_data(
 
 def default_special_limits(
     network_topology: pd.DataFrame,
-) -> dict[int, dict[str, dict[str, (int, str)]]]:
+) -> dict[str, dict[str, dict[str, (int, str)]]]:
     nns = network_topology.loc[
         network_topology["subnet_type"] == "NNS", "subnet_id"
     ].iloc[0]
@@ -116,5 +116,6 @@ def default_special_limits(
                 "Everyware": (2, "lt"),
                 "Digital Realty": (2, "lt"),
             },
-        }
+        },
+        "default": {"node_provider": {"DFINITY": (1, "eq")}},
     }

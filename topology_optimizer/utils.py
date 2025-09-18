@@ -193,6 +193,30 @@ def get_subnet_limit(
     return network_topology.at[subnet_index, f"subnet_limit_{attribute}"]
 
 
+def get_special_limits(
+    special_limits: dict[str, dict[str, dict[str, (int, str)]]],
+    subnet_id: str,
+    attr: str,
+) -> dict[str, tuple[int, str]]:
+    limits = {}
+    if subnet_id in special_limits:
+        if attr in special_limits[subnet_id]:
+            limits = special_limits[subnet_id][attr]
+
+    default_limits = {}
+    if "default" in special_limits:
+        default_limits = special_limits["default"]
+
+    # Merge the subnet limits with default limits
+    # only if the current subnet specific limits
+    # don't define that exact attribute
+    for key in default_limits:
+        if key not in limits:
+            limits[key] = default_limits[key]
+
+    return limits
+
+
 def get_node_pipeline(file_path: str) -> pd.DataFrame:
     """
     Load pipeline node configurations from a CSV.
