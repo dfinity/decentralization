@@ -255,6 +255,8 @@ def add_attribute_limits(network_data, model, attr):
                     raise ValueError("`gt` doesn't make sense in our model.")
                 else:
                     raise ValueError(f"Operation `{op}` is not supported.")
+            else:
+                prob += attr_alloc[idx][subnet] <= limit, f"{attr}_Limit_{val}_{subnet}"
 
 
 def add_attribute_subnet_allowed_values_constraints(
