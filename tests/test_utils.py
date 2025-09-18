@@ -127,6 +127,7 @@ class NodeEntry:
     _country: str
     _status: str
     _subnet_id: str
+    _region: str
 
     def __init__(self):
         self._node_id = str(uuid.uuid4())
@@ -166,6 +167,7 @@ class NodeEntry:
 
     def with_country(self, country_code: str) -> Self:
         self._region = "," + country_code + ","
+        self._country = country_code
         return self
 
     def with_status(self, status: str) -> Self:

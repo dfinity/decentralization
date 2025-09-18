@@ -210,9 +210,10 @@ def get_special_limits(
     # Merge the subnet limits with default limits
     # only if the current subnet specific limits
     # don't define that exact attribute
-    for key in default_limits:
-        if key not in limits:
-            limits[key] = default_limits[key]
+    if attr in default_limits:
+        for key in default_limits[attr]:
+            if key not in limits:
+                limits[key] = default_limits[attr][key]
 
     return limits
 

@@ -253,6 +253,8 @@ def add_attribute_limits(network_data, model, attr):
                     )
                 elif op == "gt":
                     raise ValueError("`gt` doesn't make sense in our model.")
+                else:
+                    raise ValueError(f"Operation `{op}` is not supported.")
 
 
 def add_attribute_subnet_allowed_values_constraints(
