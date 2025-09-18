@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pandas as pd
-import os
-import logging
-from typing import List, Dict, Optional
 import json
+import logging
+import os
+from typing import Dict, List, Optional
+
+import pandas as pd
 import yaml
 
 # Constants

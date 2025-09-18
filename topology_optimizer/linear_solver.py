@@ -5,21 +5,23 @@ MILP model for optimal node-to-subnet allocation in the ICP network.
 
 """
 
-import tempfile
-from pulp import (
-    LpProblem,
-    LpVariable,
-    LpInteger,
-    LpBinary,
-    lpSum,
-    LpMinimize,
-    value,
-    LpStatus,
-)
-import pandas as pd
-from topology_optimizer.utils import get_subnet_limit
-from pulp import PULP_CBC_CMD
 import logging
+import tempfile
+
+import pandas as pd
+from pulp import (
+    PULP_CBC_CMD,
+    LpBinary,
+    LpInteger,
+    LpMinimize,
+    LpProblem,
+    LpStatus,
+    LpVariable,
+    lpSum,
+    value,
+)
+
+from topology_optimizer.utils import get_subnet_limit
 
 # Standard attribute types to optimize over
 ATTRIBUTE_NAMES = [
@@ -234,9 +236,10 @@ def add_attribute_limits(network_data, model, attr):
     for subnet in subnet_indices:
         limit = get_subnet_limit(topology, subnet, attr)
         special_limits = {}
-        if subnet in network_special_limits:
-            if attr in network_special_limits[subnet]:
-                special_limits = network_special_limits[subnet][attr]
+        subnet_id = topology.loc[subnet, "subnet_id"]
+        if subnet_id in network_special_limits:
+            if attr in network_special_limits[subnet_id]:
+                special_limits = network_special_limits[subnet_id][attr]
         for idx in attr_indices:
             val = attr_list[idx]
             if val in special_limits:

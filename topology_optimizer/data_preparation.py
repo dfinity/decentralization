@@ -1,13 +1,14 @@
+from typing import Any, Dict, List
+
 import pandas as pd
-from typing import Dict, Any, List
 
 from topology_optimizer.utils import (
     create_node_dataframe,
     generate_synthetic_countries,
     generate_synthetic_nodes,
     get_existing_assignment,
-    post_process_node_providers,
     mark_blacklisted_nodes,
+    post_process_node_providers,
 )
 
 
@@ -104,7 +105,9 @@ def prepare_data(
 def default_special_limits(
     network_topology: pd.DataFrame,
 ) -> dict[int, dict[str, dict[str, (int, str)]]]:
-    nns = network_topology[network_topology["subnet_type"] == "NNS"].index[0]
+    nns = network_topology.loc[
+        network_topology["subnet_type"] == "NNS", "subnet_id"
+    ].iloc[0]
     return {
         nns: {
             "node_provider": {"DFINITY": (3, "eq")},
