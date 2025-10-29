@@ -5,40 +5,42 @@
 Network Topology Analysis and Visualization Script.
 """
 
-import sys
 import os
+import sys
 import traceback
 
 # Add project root to sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import json
+import logging
 import time
 from enum import Enum
 from pathlib import Path
-from topology_optimizer.testing import validate_subnet_assignment
+from typing import Optional
+
 import click
 import pandas as pd
+
 from topology_optimizer.data_preparation import prepare_data
 from topology_optimizer.linear_solver import (
     solver_model_minimize_nodes,
     solver_model_minimize_swaps,
 )
-from topology_optimizer.visualization import (
-    visualize_input_data,
-    visualize_model_output,
-    visualize_current_node_allocation,
-    visualize_subnet_changes_from_json,
-    visualize_provider_utilization,
-)
+from topology_optimizer.testing import validate_subnet_assignment
 from topology_optimizer.utils import (
-    get_target_topology,
-    get_node_pipeline,
     export_subnet_node_changes_to_json,
+    get_node_pipeline,
+    get_target_topology,
     load_blacklist,
 )
-import logging
-from typing import Optional
+from topology_optimizer.visualization import (
+    visualize_current_node_allocation,
+    visualize_input_data,
+    visualize_model_output,
+    visualize_provider_utilization,
+    visualize_subnet_changes_from_json,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
@@ -66,6 +68,7 @@ def load_and_prepare_data(
     enforce_blacklist_constraint: bool,
     enforce_per_node_provider_assignation: bool,
     special_limits_file: Optional[Path],
+    enforce_spare_nodes_per_dc: bool,
 ) -> pd.DataFrame:
     df_nodes = pd.read_csv(file_path_current_nodes)
     df_node_pipeline = get_node_pipeline(node_pipeline_file)
@@ -106,6 +109,7 @@ def load_and_prepare_data(
         enforce_per_node_provider_assignation=enforce_per_node_provider_assignation,
         sev_node_providers=sev_providers,
         special_limits=special_limits,
+        enforce_spare_nodes_per_dc=enforce_spare_nodes_per_dc,
     )
 
 
@@ -229,6 +233,7 @@ def main(config_file: Path) -> None:
             "enforce_per_node_provider_assignation", False
         ),
         special_limits_file=config.get("special_limits_file", None),
+        enforce_spare_nodes_per_dc=config.get("enforce_spare_nodes_per_dc", False),
     )
 
     outcomes = {}

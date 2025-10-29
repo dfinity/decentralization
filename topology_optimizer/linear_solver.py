@@ -5,21 +5,23 @@ MILP model for optimal node-to-subnet allocation in the ICP network.
 
 """
 
-import tempfile
-from pulp import (
-    LpProblem,
-    LpVariable,
-    LpInteger,
-    LpBinary,
-    lpSum,
-    LpMinimize,
-    value,
-    LpStatus,
-)
-import pandas as pd
-from topology_optimizer.utils import get_subnet_limit
-from pulp import PULP_CBC_CMD
 import logging
+import tempfile
+
+import pandas as pd
+from pulp import (
+    PULP_CBC_CMD,
+    LpBinary,
+    LpInteger,
+    LpMinimize,
+    LpProblem,
+    LpStatus,
+    LpVariable,
+    lpSum,
+    value,
+)
+
+from topology_optimizer.utils import get_subnet_limit
 
 # Standard attribute types to optimize over
 ATTRIBUTE_NAMES = [
@@ -141,6 +143,65 @@ def add_node_constraints(network_data, model):
     # Enforce per provider constraints
     if network_data.get("enforce_per_node_provider_assignation", False):
         add_per_node_provider_constraint(model, network_data)
+
+    if network_data.get("enforce_spare_nodes_per_dc", False):
+        enforce_spare_nodes(model, network_data)
+
+
+def enforce_spare_nodes(model, network_data):
+    prob = model["prob"]
+    data_centers_list = network_data["data_center_list"]
+    data_centers = network_data["data_center_indices"]
+    node_df = network_data["node_df"]
+    node_alloc = model["node_allocations"]
+    subnet_indices = network_data["subnet_indices"]
+
+    for dc in data_centers:
+        providers_in_dc = (
+            node_df.loc[
+                node_df["data_center"] == data_centers_list[dc],
+                "original_node_provider",
+            ]
+            .dropna()
+            .unique()
+            .tolist()
+        )
+        print(
+            f"Found the following providers in dc '{data_centers_list[dc]}': {providers_in_dc}"
+        )
+
+        for provider in providers_in_dc:
+            dc_nodes = node_df[
+                (node_df["data_center"] == data_centers_list[dc])
+                & (node_df["node_provider"] == provider)
+                & (node_df["is_available"])
+                & (~node_df["is_blacklisted"])
+            ].index
+            print(
+                "For dc",
+                data_centers_list[dc],
+                "and node provider",
+                provider,
+                "found,",
+                len(dc_nodes),
+                "nodes",
+            )
+
+            if len(dc_nodes) - 1 == 0:
+                print(
+                    f"Skipping sparing node provider {provider} in dc {data_centers_list[dc]} because they have only 1 node"
+                )
+                continue
+
+            prob += (
+                lpSum(
+                    node_alloc[node][subnet]
+                    for node in dc_nodes
+                    for subnet in subnet_indices
+                )
+                <= len(dc_nodes) - 1,
+                f"AtLeastOneSpareNodePerDC_{data_centers_list[dc]}_PerNP_{provider}",
+            )
 
 
 def add_per_node_provider_constraint(model, network_data):
