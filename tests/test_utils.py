@@ -1,12 +1,14 @@
-from typing import List, Dict, Self, Any
 import uuid
-from topology_optimizer.utils import ALLOWED_FEATURES, parse_solver_result
+from typing import Any, Dict, List, Self
+
+import pandas as pd
+
 from topology_optimizer.data_preparation import prepare_data
 from topology_optimizer.linear_solver import (
-    solver_model_minimize_swaps,
     ATTRIBUTE_NAMES,
+    solver_model_minimize_swaps,
 )
-import pandas as pd
+from topology_optimizer.utils import ALLOWED_FEATURES, parse_solver_result
 
 
 class TopologyEntry:
@@ -195,6 +197,7 @@ class NetworkData:
     _enforce_health_constraint: bool
     _enforce_blacklist_constraint: bool
     _enforce_per_node_provider_assignation: bool
+    _enforce_spare_nodes_per_dc: bool
 
     _cluster_scenario: Dict[str, List[str]]
     _cluster_scenario_name: str
@@ -206,6 +209,7 @@ class NetworkData:
         self._enforce_blacklist_constraint = False
         self._enforce_per_node_provider_assignation = False
         self._enforce_health_constraint = False
+        self._enforce_spare_nodes_per_dc = False
 
         self._nodes = list()
         self._pipeline = list()
@@ -233,6 +237,10 @@ class NetworkData:
 
     def enforce_per_node_provider_assignation(self) -> Self:
         self._enforce_per_node_provider_assignation = True
+        return self
+
+    def enforce_spare_nodes_per_dc(self) -> Self:
+        self._enforce_spare_nodes_per_dc = True
         return self
 
     def with_synthetic_countries(self, num_countries: int) -> Self:
@@ -350,6 +358,7 @@ class NetworkData:
             special_limits=self._special_limits
             if len(self._special_limits) > 0
             else None,
+            enforce_spare_nodes_per_dc=self._enforce_spare_nodes_per_dc,
         )
 
 
