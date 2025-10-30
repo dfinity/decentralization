@@ -150,7 +150,7 @@ def add_node_constraints(network_data, model):
         raise ValueError(
             f"Spare node ratio has to be a float between 0 and 1. Got: {spare_node_ratio}"
         )
-    if spare_node_ratio != 1:
+    if spare_node_ratio != 0:
         enforce_spare_nodes(model, network_data, spare_node_ratio)
 
 
