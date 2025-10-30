@@ -178,7 +178,7 @@ def enforce_spare_nodes(model, network_data, spare_node_ratio):
         for provider in providers_in_dc:
             dc_nodes = node_df[
                 (node_df["data_center"] == data_centers_list[dc])
-                & (node_df["node_provider"] == provider)
+                & (node_df["original_node_provider"] == provider)
                 & (node_df["is_available"])
                 & (~node_df["is_blacklisted"])
             ].index
@@ -189,7 +189,8 @@ def enforce_spare_nodes(model, network_data, spare_node_ratio):
 
             if max_allowed_allocations_per_dc_per_np == 0:
                 print(
-                    f"Skipping sparing node provider {provider} in dc {data_centers_list[dc]} because they would have 0 nodes allowed after sparing {spare_node_ratio} nodes"
+                    f"Skipping sparing node provider {provider} in dc {data_centers_list[dc]} because they would have 0 nodes allowed after sparing {spare_node_ratio} nodes. \
+Currently they have {len(dc_nodes)} in that data center."
                 )
                 continue
 
