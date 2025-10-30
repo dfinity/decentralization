@@ -45,7 +45,8 @@ poetry run python3 ic_topology/main.py
   "enforce_sev_constraint": false,
   "enforce_health_constraint": false,
   "enforce_blacklist_constraint": true,
-  "enforce_per_node_provider_assignation": false
+  "enforce_per_node_provider_assignation": false,
+  "spare_node_ratio": 0.0
 }
 ```
 
@@ -62,6 +63,7 @@ poetry run python3 ic_topology/main.py
 | `enforce_health_constraint`| `bool`    | If `true`, only healthy nodes (not `DOWN` or `DEGRADED`) will be considered for allocation. |
 | `enforce_blacklist_constraint`| `bool`    | If `true`, blacklisted nodes will be excluded from all subnet assignments. |
 | `enforce_per_node_provider_assignation`| `bool`    | If `true` each node provider will have at least one of their nodes assigned to a subnet if they have more than 4 nodes. |
+| `spare_node_ratio` | float | If not `0.0` each node provider will have that ratio of spare nodes per data center spare. If a node provider has 10 nodes and the `spare_node_ratio` is set to 0.1, they will have up to 9 nodes assigned and one spare. |
 
 ---
 

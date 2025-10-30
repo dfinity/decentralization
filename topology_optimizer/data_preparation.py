@@ -1,13 +1,14 @@
+from typing import Any, Dict, List
+
 import pandas as pd
-from typing import Dict, Any, List
 
 from topology_optimizer.utils import (
     create_node_dataframe,
     generate_synthetic_countries,
     generate_synthetic_nodes,
     get_existing_assignment,
-    post_process_node_providers,
     mark_blacklisted_nodes,
+    post_process_node_providers,
 )
 
 
@@ -24,6 +25,7 @@ def prepare_data(
     cluster_scenario_name: str,
     enforce_per_node_provider_assignation: bool,
     sev_node_providers: List[str],
+    spare_node_ratio: bool,
     special_limits: dict[int, dict[str, dict[str, (int, str)]]] = None,
 ) -> Dict[str, Any]:
     # Remove everything that is not a replica
@@ -98,6 +100,7 @@ def prepare_data(
         "current_assignment": current_assignment,
         "enforce_per_node_provider_assignation": enforce_per_node_provider_assignation,
         "special_limits": special_limits,
+        "spare_node_ratio": spare_node_ratio,
     }
 
 
