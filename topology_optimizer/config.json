@@ -10,5 +10,5 @@
   "enforce_health_constraint": true,
   "enforce_blacklist_constraint": true,
   "enforce_per_node_provider_assignation": true,
-  "enforce_spare_nodes_per_dc": true
+  "spare_node_ratio": 0.05
 }

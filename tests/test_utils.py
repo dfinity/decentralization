@@ -197,7 +197,7 @@ class NetworkData:
     _enforce_health_constraint: bool
     _enforce_blacklist_constraint: bool
     _enforce_per_node_provider_assignation: bool
-    _enforce_spare_nodes_per_dc: bool
+    _spare_node_ratio: float
 
     _cluster_scenario: Dict[str, List[str]]
     _cluster_scenario_name: str
@@ -209,7 +209,7 @@ class NetworkData:
         self._enforce_blacklist_constraint = False
         self._enforce_per_node_provider_assignation = False
         self._enforce_health_constraint = False
-        self._enforce_spare_nodes_per_dc = False
+        self._spare_node_ratio = 1.0
 
         self._nodes = list()
         self._pipeline = list()
@@ -239,8 +239,8 @@ class NetworkData:
         self._enforce_per_node_provider_assignation = True
         return self
 
-    def enforce_spare_nodes_per_dc(self) -> Self:
-        self._enforce_spare_nodes_per_dc = True
+    def with_spare_node_ratio(self, ratio) -> Self:
+        self._spare_node_ratio = ratio
         return self
 
     def with_synthetic_countries(self, num_countries: int) -> Self:
@@ -358,7 +358,7 @@ class NetworkData:
             special_limits=self._special_limits
             if len(self._special_limits) > 0
             else None,
-            enforce_spare_nodes_per_dc=self._enforce_spare_nodes_per_dc,
+            spare_node_ratio=self._spare_node_ratio,
         )
 
 

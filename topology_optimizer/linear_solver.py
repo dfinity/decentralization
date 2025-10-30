@@ -6,6 +6,7 @@ MILP model for optimal node-to-subnet allocation in the ICP network.
 """
 
 import logging
+import math
 import tempfile
 
 import pandas as pd
@@ -144,17 +145,24 @@ def add_node_constraints(network_data, model):
     if network_data.get("enforce_per_node_provider_assignation", False):
         add_per_node_provider_constraint(model, network_data)
 
-    if network_data.get("enforce_spare_nodes_per_dc", False):
-        enforce_spare_nodes(model, network_data)
+    spare_node_ratio = network_data.get("spare_node_ratio")
+    if spare_node_ratio < 0 or spare_node_ratio > 1:
+        raise ValueError(
+            f"Spare node ratio has to be a float between 0 and 1. Got: {spare_node_ratio}"
+        )
+    if spare_node_ratio != 1:
+        enforce_spare_nodes(model, network_data, spare_node_ratio)
 
 
-def enforce_spare_nodes(model, network_data):
+def enforce_spare_nodes(model, network_data, spare_node_ratio):
     prob = model["prob"]
     data_centers_list = network_data["data_center_list"]
     data_centers = network_data["data_center_indices"]
     node_df = network_data["node_df"]
     node_alloc = model["node_allocations"]
     subnet_indices = network_data["subnet_indices"]
+
+    nodes_to_use_ratio = 1 - spare_node_ratio
 
     for dc in data_centers:
         providers_in_dc = (
@@ -166,9 +174,6 @@ def enforce_spare_nodes(model, network_data):
             .unique()
             .tolist()
         )
-        print(
-            f"Found the following providers in dc '{data_centers_list[dc]}': {providers_in_dc}"
-        )
 
         for provider in providers_in_dc:
             dc_nodes = node_df[
@@ -177,19 +182,14 @@ def enforce_spare_nodes(model, network_data):
                 & (node_df["is_available"])
                 & (~node_df["is_blacklisted"])
             ].index
-            print(
-                "For dc",
-                data_centers_list[dc],
-                "and node provider",
-                provider,
-                "found,",
-                len(dc_nodes),
-                "nodes",
+
+            max_allowed_allocations_per_dc_per_np = math.floor(
+                len(dc_nodes) * nodes_to_use_ratio
             )
 
-            if len(dc_nodes) - 1 == 0:
+            if max_allowed_allocations_per_dc_per_np == 0:
                 print(
-                    f"Skipping sparing node provider {provider} in dc {data_centers_list[dc]} because they have only 1 node"
+                    f"Skipping sparing node provider {provider} in dc {data_centers_list[dc]} because they would have 0 nodes allowed after sparing {spare_node_ratio} nodes"
                 )
                 continue
 
@@ -199,7 +199,7 @@ def enforce_spare_nodes(model, network_data):
                     for node in dc_nodes
                     for subnet in subnet_indices
                 )
-                <= len(dc_nodes) - 1,
+                <= max_allowed_allocations_per_dc_per_np,
                 f"AtLeastOneSpareNodePerDC_{data_centers_list[dc]}_PerNP_{provider}",
             )
 

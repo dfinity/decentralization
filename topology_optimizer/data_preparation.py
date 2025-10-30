@@ -25,7 +25,7 @@ def prepare_data(
     cluster_scenario_name: str,
     enforce_per_node_provider_assignation: bool,
     sev_node_providers: List[str],
-    enforce_spare_nodes_per_dc: bool,
+    spare_node_ratio: bool,
     special_limits: dict[int, dict[str, dict[str, (int, str)]]] = None,
 ) -> Dict[str, Any]:
     # Remove everything that is not a replica
@@ -100,7 +100,7 @@ def prepare_data(
         "current_assignment": current_assignment,
         "enforce_per_node_provider_assignation": enforce_per_node_provider_assignation,
         "special_limits": special_limits,
-        "enforce_spare_nodes_per_dc": enforce_spare_nodes_per_dc,
+        "spare_node_ratio": spare_node_ratio,
     }
 
 

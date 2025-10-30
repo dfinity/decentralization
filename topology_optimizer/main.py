@@ -68,7 +68,7 @@ def load_and_prepare_data(
     enforce_blacklist_constraint: bool,
     enforce_per_node_provider_assignation: bool,
     special_limits_file: Optional[Path],
-    enforce_spare_nodes_per_dc: bool,
+    spare_node_ratio: bool,
 ) -> pd.DataFrame:
     df_nodes = pd.read_csv(file_path_current_nodes)
     df_node_pipeline = get_node_pipeline(node_pipeline_file)
@@ -109,7 +109,7 @@ def load_and_prepare_data(
         enforce_per_node_provider_assignation=enforce_per_node_provider_assignation,
         sev_node_providers=sev_providers,
         special_limits=special_limits,
-        enforce_spare_nodes_per_dc=enforce_spare_nodes_per_dc,
+        spare_node_ratio=spare_node_ratio,
     )
 
 
@@ -233,7 +233,7 @@ def main(config_file: Path) -> None:
             "enforce_per_node_provider_assignation", False
         ),
         special_limits_file=config.get("special_limits_file", None),
-        enforce_spare_nodes_per_dc=config.get("enforce_spare_nodes_per_dc", False),
+        spare_node_ratio=config.get("spare_node_ratio", 1.0),
     )
 
     outcomes = {}
