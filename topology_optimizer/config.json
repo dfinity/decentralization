@@ -1,5 +1,5 @@
 {
-  "nodes_file": "./data/network_data/current_nodes_20250819_110856.csv",
+  "nodes_file": "./data/network_data/current_nodes_20251031_113713.csv",
   "topology_file": "./data/topology/prod_topology.csv",
   "node_pipeline_file": "./data/node_pipelines/11_new_subnets.csv",
   "blacklist_file": "./data/blacklist.yaml",
