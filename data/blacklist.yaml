@@ -4,3 +4,6 @@
 # https://github.com/dfinity/dre/blob/main/rs/ic-management-types/src/lib.rs#L317-L324
 
 features:
+  - feature: node_provider
+    value: g7dkt-aapqq-j3hqt-xtiys-pwapz-idulp-nwagd-zibqm-caxa4-gc23t-3qe
+    explanation: Freeing up Antwerp nodes
