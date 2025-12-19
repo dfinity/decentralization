@@ -10,6 +10,3 @@ features:
   - feature: node_id
     value: 33mvi-izcix-iv5ys-fypko-b4fwq-w3uns-s3tbl-5ij6h-qvxsf-nm3gb-fqe
     explanation: Requested to not assign to any subnets still
-  - feature: node_id
-    value: hckfw-kshvv-mzhew-h6isd-5q2wd-lde6w-uipmv-7gbuz-53wqz-cz5kx-oqe
-    explanation: Requested to not assign to any subnets still
