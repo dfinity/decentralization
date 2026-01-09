@@ -1,12 +1,14 @@
-from typing import List, Dict, Self, Any
 import uuid
-from topology_optimizer.utils import ALLOWED_FEATURES, parse_solver_result
+from typing import Any, Dict, List, Self
+
+import pandas as pd
+
 from topology_optimizer.data_preparation import prepare_data
 from topology_optimizer.linear_solver import (
-    solver_model_minimize_swaps,
     ATTRIBUTE_NAMES,
+    solver_model_minimize_swaps,
 )
-import pandas as pd
+from topology_optimizer.utils import ALLOWED_FEATURES, parse_solver_result
 
 
 class TopologyEntry:
@@ -125,6 +127,7 @@ class NodeEntry:
     _country: str
     _status: str
     _subnet_id: str
+    _region: str
 
     def __init__(self):
         self._node_id = str(uuid.uuid4())
@@ -164,6 +167,7 @@ class NodeEntry:
 
     def with_country(self, country_code: str) -> Self:
         self._region = "," + country_code + ","
+        self._country = country_code
         return self
 
     def with_status(self, status: str) -> Self:
@@ -198,7 +202,7 @@ class NetworkData:
 
     _cluster_scenario: Dict[str, List[str]]
     _cluster_scenario_name: str
-    _special_limits: Dict[int, dict[str, dict[str, (int, str)]]]
+    _special_limits: Dict[str, dict[str, dict[str, (int, str)]]]
 
     def __init__(self):
         self._cluster_scenario_name = str(uuid.uuid4())
@@ -306,25 +310,16 @@ class NetworkData:
     def with_special_limit(
         self, subnet: str, attr: str, key: str, value: int, operator: str
     ) -> Self:
-        subnet_index = None
-        for index, topology_subnet in enumerate(self._network_topology):
-            if topology_subnet._subnet_id == subnet:
-                subnet_index = index
-                break
-
-        if subnet_index is None:
-            raise ValueError(f"Subnet {subnet} not found")
-
         if attr not in ATTRIBUTE_NAMES:
             raise ValueError(f"Attribute {attr} is unknown")
 
-        if subnet_index not in self._special_limits:
-            self._special_limits[subnet_index] = {}
+        if subnet not in self._special_limits:
+            self._special_limits[subnet] = {}
 
-        if attr not in self._special_limits[subnet_index]:
-            self._special_limits[subnet_index][attr] = {}
+        if attr not in self._special_limits[subnet]:
+            self._special_limits[subnet][attr] = {}
 
-        self._special_limits[subnet_index][attr][key] = (value, operator)
+        self._special_limits[subnet][attr][key] = (value, operator)
 
         return self
 

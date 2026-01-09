@@ -5,21 +5,23 @@ MILP model for optimal node-to-subnet allocation in the ICP network.
 
 """
 
-import tempfile
-from pulp import (
-    LpProblem,
-    LpVariable,
-    LpInteger,
-    LpBinary,
-    lpSum,
-    LpMinimize,
-    value,
-    LpStatus,
-)
-import pandas as pd
-from topology_optimizer.utils import get_subnet_limit
-from pulp import PULP_CBC_CMD
 import logging
+import tempfile
+
+import pandas as pd
+from pulp import (
+    PULP_CBC_CMD,
+    LpBinary,
+    LpInteger,
+    LpMinimize,
+    LpProblem,
+    LpStatus,
+    LpVariable,
+    lpSum,
+    value,
+)
+
+from topology_optimizer.utils import get_special_limits, get_subnet_limit
 
 # Standard attribute types to optimize over
 ATTRIBUTE_NAMES = [
@@ -233,10 +235,8 @@ def add_attribute_limits(network_data, model, attr):
 
     for subnet in subnet_indices:
         limit = get_subnet_limit(topology, subnet, attr)
-        special_limits = {}
-        if subnet in network_special_limits:
-            if attr in network_special_limits[subnet]:
-                special_limits = network_special_limits[subnet][attr]
+        subnet_id = topology.loc[subnet, "subnet_id"]
+        special_limits = get_special_limits(network_special_limits, subnet_id, attr)
         for idx in attr_indices:
             val = attr_list[idx]
             if val in special_limits:
@@ -253,14 +253,10 @@ def add_attribute_limits(network_data, model, attr):
                     )
                 elif op == "gt":
                     raise ValueError("`gt` doesn't make sense in our model.")
+                else:
+                    raise ValueError(f"Operation `{op}` is not supported.")
             else:
                 prob += attr_alloc[idx][subnet] <= limit, f"{attr}_Limit_{val}_{subnet}"
-                if attr == "node_provider" and val == "DFINITY":
-                    # Ensure that Dfinity is in each subnet at least once
-                    prob += (
-                        attr_alloc[idx][subnet] == 1,
-                        f"{subnet}_Subnet_Exact_1_{val}",
-                    )
 
 
 def add_attribute_subnet_allowed_values_constraints(
