@@ -1,13 +1,14 @@
+from typing import Any, Dict, List
+
 import pandas as pd
-from typing import Dict, Any, List
 
 from topology_optimizer.utils import (
     create_node_dataframe,
     generate_synthetic_countries,
     generate_synthetic_nodes,
     get_existing_assignment,
-    post_process_node_providers,
     mark_blacklisted_nodes,
+    post_process_node_providers,
 )
 
 
@@ -105,7 +106,10 @@ def default_special_limits(
     network_topology: pd.DataFrame,
 ) -> dict[int, dict[str, dict[str, (int, str)]]]:
     nns = network_topology[network_topology["subnet_type"] == "NNS"].index[0]
-    return {
+    # Only enforce this if swiss subnet is in the topology
+    swiss_subnets = network_topology[network_topology["subnet_type"] == "Swiss Subnet"]
+
+    limits = {
         nns: {
             "node_provider": {"DFINITY": (3, "eq")},
             "data_center": {"sh1": (2, "lt"), "zh2": (2, "lt")},
@@ -113,5 +117,14 @@ def default_special_limits(
                 "Everyware": (2, "lt"),
                 "Digital Realty": (2, "lt"),
             },
-        }
+        },
     }
+
+    if not swiss_subnets.empty:
+        swiss_subnet_id = swiss_subnets.index[0]
+        limits[swiss_subnet_id] = {
+            # Override the default requirement
+            "node_provider": {"DFINITY": (0, "eq")},
+        }
+
+    return limits
