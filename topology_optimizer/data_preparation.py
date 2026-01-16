@@ -106,11 +106,10 @@ def default_special_limits(
     network_topology: pd.DataFrame,
 ) -> dict[int, dict[str, dict[str, (int, str)]]]:
     nns = network_topology[network_topology["subnet_type"] == "NNS"].index[0]
-    swiss_subnet_id = network_topology[
-        network_topology["subnet_type"] == "Swiss Subnet"
-    ].index[0]
+    # Only enforce this if swiss subnet is in the topology
+    swiss_subnets = network_topology[network_topology["subnet_type"] == "Swiss Subnet"]
 
-    return {
+    limits = {
         nns: {
             "node_provider": {"DFINITY": (3, "eq")},
             "data_center": {"sh1": (2, "lt"), "zh2": (2, "lt")},
@@ -119,8 +118,13 @@ def default_special_limits(
                 "Digital Realty": (2, "lt"),
             },
         },
-        swiss_subnet_id: {
+    }
+
+    if not swiss_subnets.empty:
+        swiss_subnet_id = swiss_subnets.index[0]
+        limits[swiss_subnet_id] = {
             # Override the default requirement
             "node_provider": {"DFINITY": (0, "eq")},
-        },
-    }
+        }
+
+    return limits
