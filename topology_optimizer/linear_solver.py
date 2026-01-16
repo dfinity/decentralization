@@ -5,21 +5,23 @@ MILP model for optimal node-to-subnet allocation in the ICP network.
 
 """
 
-import tempfile
-from pulp import (
-    LpProblem,
-    LpVariable,
-    LpInteger,
-    LpBinary,
-    lpSum,
-    LpMinimize,
-    value,
-    LpStatus,
-)
-import pandas as pd
-from topology_optimizer.utils import get_subnet_limit
-from pulp import PULP_CBC_CMD
 import logging
+import tempfile
+
+import pandas as pd
+from pulp import (
+    PULP_CBC_CMD,
+    LpBinary,
+    LpInteger,
+    LpMinimize,
+    LpProblem,
+    LpStatus,
+    LpVariable,
+    lpSum,
+    value,
+)
+
+from topology_optimizer.utils import get_subnet_limit
 
 # Standard attribute types to optimize over
 ATTRIBUTE_NAMES = [
@@ -431,7 +433,7 @@ def build_base_model(network_data):
             "UK",
         ],
     )
-    restrict_subnet_to_country_values(network_data, model, "Swiss Subnet", ["CH"])
+    restrict_subnet_to_country_values(network_data, model, "Swiss Subnet", ["CH", "LI"])
     restrict_subnet_to_country_values(network_data, model, "US Subnet", ["US"])
 
     return model
