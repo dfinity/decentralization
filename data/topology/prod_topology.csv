@@ -1,8 +1,8 @@
 subnet_type,subnet_id,number_of_subnets,subnet_size,is_sev,subnet_limit_node_provider,subnet_limit_data_center,subnet_limit_data_center_provider,subnet_limit_country
-NNS,tdb26-jop6k-aogll-7ltgs-eruif-6kk7m-qpktf-gdiqx-mxtrf-vb5e6-eqe,1,40,FALSE,1,1,1,3
+NNS,tdb26-jop6k-aogll-7ltgs-eruif-6kk7m-qpktf-gdiqx-mxtrf-vb5e6-eqe,1,40,TRUE,1,1,1,3
 SNS,x33ed-h457x-bsgyx-oqxqf-6pzwv-wkhzr-rm2j3-npodi-purzm-n66cg-gae,1,34,FALSE,1,1,1,3
 Fiduciary,pzp6e-ekpqk-3c5x7-2h6so-njoeq-mt45d-h3h6c-q3mxf-vpeq5-fk5o7-yae,1,34,FALSE,1,1,1,3
-II,uzr34-akd3s-xrdag-3ql62-ocgoh-ld2ao-tamcv-54e7j-krwgb-2gm4z-oqe,1,34,TRUE,1,1,1,3
+II,uzr34-akd3s-xrdag-3ql62-ocgoh-ld2ao-tamcv-54e7j-krwgb-2gm4z-oqe,1,34,FALSE,1,1,1,3
 Bitcoin canister,w4rem-dv5e3-widiz-wbpea-kbttk-mnzfm-tzrc7-svcj3-kbxyb-zamch-hqe,1,13,FALSE,1,1,1,2
 European Subnet,bkfrj-6k62g-dycql-7h53p-atvkj-zg4to-gaogh-netha-ptybj-ntsgw-rqe,1,13,FALSE,1,1,1,2
 Swiss Subnet,3zsyy-cnoqf-tvlun-ymf55-tkpca-ox7uw-kfxoh-7khwq-2gz43-wafem-lqe,1,13,FALSE,1,1,1,13
