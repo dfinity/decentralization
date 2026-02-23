@@ -37,6 +37,12 @@ ATTRIBUTE_NAMES = [
 # of his nodes is always assigned to a subnet.
 MINIMUM_NODES_REQUIRED_FOR_ENSURING_PROVIDER_ASSIGNATION = 4
 
+# Penalty weight applied for each SEV node provider group that is missing
+# from a SEV-required subnet. This soft constraint pushes the solver to
+# maximize SEV provider diversity in SEV subnets without making it a hard
+# requirement that could cause infeasibility.
+SEV_PROVIDER_MISSING_PENALTY = 10
+
 # ------------------------------------------------------------------------------
 # INITIALIZATION
 # ------------------------------------------------------------------------------
@@ -186,6 +192,67 @@ def add_per_node_provider_constraint(model, network_data):
             >= 1,
             f"MinOneNodeAssignedPerProvider_{provider}",
         )
+
+
+def build_sev_provider_penalty(network_data, model):
+    """
+    Builds a penalty term that penalizes each SEV node provider group
+    for not having a node in each SEV-required subnet. Returns an LP
+    expression that should be added to the objective function.
+
+    For each (sev_provider_group, sev_subnet) pair, a binary variable
+    `sev_missing` is created that is 1 when the provider has no node
+    assigned to that subnet. The total penalty is the weighted sum of
+    all such missing assignments.
+    """
+    if network_data.get("enforce_sev_constraint", False):
+        return 0
+
+    prob = model["prob"]
+    node_alloc = model["node_allocations"]
+    node_df = network_data["node_df"]
+    topology = network_data["network_topology"]
+    subnet_indices = network_data["subnet_indices"]
+
+    sev_node_provider_groups = [
+        p
+        for p in node_df[node_df["is_sev"]]["node_provider"].unique()
+        if not p.startswith("SYNTHETIC")
+    ]
+
+    sev_subnets = [s for s in subnet_indices if topology.loc[s, "is_sev"]]
+
+    if not sev_node_provider_groups or not sev_subnets:
+        return 0
+
+    sev_missing = {}
+    for provider_group in sev_node_provider_groups:
+        provider_sev_nodes = node_df[
+            (node_df["node_provider"] == provider_group) & (node_df["is_sev"])
+        ].index.tolist()
+
+        for subnet in sev_subnets:
+            var = LpVariable(
+                f"sev_missing_{provider_group}_{subnet}", 0, 1, cat=LpBinary
+            )
+            sev_missing[(provider_group, subnet)] = var
+
+            # sev_missing == 1 when no node from this provider is in this subnet.
+            # sum(node_alloc[n][subnet] for n in provider_nodes) + sev_missing >= 1
+            # Together with minimization this ensures sev_missing is 1 only when
+            # the provider truly has no node in the subnet.
+            prob += (
+                lpSum(node_alloc[n][subnet] for n in provider_sev_nodes) + var >= 1,
+                f"SEV_Missing_Link_{provider_group}_{subnet}",
+            )
+
+    penalty = lpSum(
+        SEV_PROVIDER_MISSING_PENALTY * sev_missing[(pg, s)]
+        for pg in sev_node_provider_groups
+        for s in sev_subnets
+    )
+
+    return penalty
 
 
 def add_attribute_constraints(network_data, model, attr):
@@ -451,13 +518,16 @@ def solver_model_minimize_nodes(network_data):
     node_indices = network_data["node_indices"]
     subnet_indices = network_data["subnet_indices"]
 
+    sev_penalty = build_sev_provider_penalty(network_data, model)
+
     prob += (
         lpSum(
             node_alloc[i][j]
             for i in node_indices
             if is_synthetic[i]
             for j in subnet_indices
-        ),
+        )
+        + sev_penalty,
         "MinimizeSynthetic",
     )
 
@@ -544,10 +614,13 @@ def solver_model_minimize_swaps(network_data, min_synthetic_used=100):
     # Moved nodes have additional deviation cost due to operational costs. Just dropping and adding nodes
     # can be done in one go, whereas moving the node from one subnet to another takes time for the proposals
     # to execute.
+    sev_penalty = build_sev_provider_penalty(network_data, model)
+
     deviation_cost = (
         lpSum(dropped[i] + (2 + 1) * moved[i] for i in prev_assigned)
         + lpSum(new_assign[i] for i in prev_unassigned)
         + 100 * synthetic_used
+        + sev_penalty
     )
     prob += deviation_cost
     prob.sense = LpMinimize
