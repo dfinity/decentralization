@@ -4,27 +4,3 @@
 # https://github.com/dfinity/dre/blob/main/rs/ic-management-types/src/lib.rs#L317-L324
 
 features:
-  - feature: node_provider
-    value: 2wxzd-qrbrs-ailta-kdtyb-ucg35-xcxd4-txevb-ot7hx-wiyus-szcca-nqe 
-    description: The node provider decided to sell their nodes to a different entity 
-  - feature: node_id
-    value: 647s4-toz5b-tgvod-ojm2t-g7g3m-kn2le-c36yz-doyb3-rh2fo-ushld-dqe
-    description: Reserved for a new sev subnet
-  - feature: node_id
-    value: hckfw-kshvv-mzhew-h6isd-5q2wd-lde6w-uipmv-7gbuz-53wqz-cz5kx-oqe
-    description: Reserved for a new sev subnet
-  - feature: node_id
-    value: oauho-ofmnf-bq3eu-z47lj-j3fkh-r7odv-zkh4r-lmia2-vhkl6-r6mgh-cqe
-    description: Reserved for a new sev subnet
-  - feature: node_id
-    value: m5mj2-rta3p-n4zze-flubl-liaay-3tffk-5nl6d-k5ckv-6mdrg-acnrh-rae
-    description: Reserved for a new sev subnet
-  - feature: node_id
-    value: vbryd-i5wxp-njyct-thu6d-5ydsn-djzwx-ly4ny-r55cg-sr5k3-piuad-cqe
-    description: Reserved for a new sev subnet
-  - feature: node_id
-    value: g75ol-eu444-h65jf-ddman-edmen-johle-s2bim-a3yn6-gkpat-5c32o-7ae
-    description: Reserved for a new sev subnet
-  - feature: node_id
-    value: vfyx3-xlume-gp5it-lkwiy-tbjoc-l5ole-f7zm4-vdi63-c4k7w-xrekc-rae
-    description: Reserved for a new sev subnet
