@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pandas as pd
-import os
-import logging
-from typing import List, Dict, Optional
 import json
+import logging
+import os
+from typing import Dict, List, Optional
+
+import pandas as pd
 import yaml
 
 # Constants
@@ -345,8 +346,7 @@ def load_blacklist(file_path: str) -> Dict[str, set]:
     Supports features: 'node_id', 'node_provider', 'node_operator', 'data_center', 'data_center_provider'
     """
 
-    # Map of values from file to values in dataframes.
-    blacklist = {feature: set() for feature in ALLOWED_FEATURES.values()}
+    blacklist = {}
 
     try:
         with open(file_path, "r") as f:
@@ -356,8 +356,9 @@ def load_blacklist(file_path: str) -> Dict[str, set]:
         for entry in features:
             feature = entry.get("feature")
             value = entry.get("value")
-            if feature in ALLOWED_FEATURES and value is not None:
-                blacklist[ALLOWED_FEATURES[feature]].add(value)
+            if feature not in blacklist:
+                blacklist[feature] = set()
+            blacklist[feature].add(value)
 
     except Exception as e:
         logging.warning(f"Failed to load blacklist from {file_path}: {e}")
@@ -381,7 +382,10 @@ def mark_blacklisted_nodes(
     for feature, values in blacklist.items():
         if feature not in df.columns:
             print(
-                "Skipping blacklisting of a feature, because it's not present:", feature
+                "Skipping blacklisting of a feature, because it's not present:",
+                feature,
+                "Existing columns: ",
+                df.columns,
             )
             continue
         for value in values:

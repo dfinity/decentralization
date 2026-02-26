@@ -8,6 +8,6 @@
   "no_synthetic_countries": 6,
   "enforce_sev_constraint": false,
   "enforce_health_constraint": false,
-  "enforce_blacklist_constraint": false,
+  "enforce_blacklist_constraint": true,
   "enforce_per_node_provider_assignation": false
 }
