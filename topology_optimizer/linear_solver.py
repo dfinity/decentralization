@@ -614,13 +614,13 @@ def solver_model_minimize_swaps(network_data, min_synthetic_used=100):
     # Moved nodes have additional deviation cost due to operational costs. Just dropping and adding nodes
     # can be done in one go, whereas moving the node from one subnet to another takes time for the proposals
     # to execute.
-    sev_penalty = build_sev_provider_penalty(network_data, model)
+    # sev_penalty = build_sev_provider_penalty(network_data, model)
 
     deviation_cost = (
         lpSum(dropped[i] + (2 + 1) * moved[i] for i in prev_assigned)
         + lpSum(new_assign[i] for i in prev_unassigned)
         + 100 * synthetic_used
-        + sev_penalty
+        # + sev_penalty
     )
     prob += deviation_cost
     prob.sense = LpMinimize
