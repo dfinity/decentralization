@@ -4,6 +4,3 @@
 # https://github.com/dfinity/dre/blob/main/rs/ic-management-types/src/lib.rs#L317-L324
 
 features:
-  - feature: node_provider
-    value: 2wxzd-qrbrs-ailta-kdtyb-ucg35-xcxd4-txevb-ot7hx-wiyus-szcca-nqe 
-    description: The node provider decided to sell their nodes to a different entity 

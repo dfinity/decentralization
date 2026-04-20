@@ -274,11 +274,11 @@ def visualize_derived_node_allocation(
 
     # Set up figure
     fig, ax = plt.subplots(figsize=(15, 10))
-    bottoms = np.zeros(len(pivot_df))
+    bottoms = pd.Series(np.zeros(len(pivot_df)), index=pivot_df.index)
 
     # Plot stacked bars
     for attr in attribute_list:
-        values = pivot_df.get(attr, 0)
+        values = pivot_df.get(attr, pd.Series(0, index=pivot_df.index))
         ax.bar(
             pivot_df.index,
             values,
@@ -293,7 +293,7 @@ def visualize_derived_node_allocation(
     # Overlay Nakamoto coefficients
     for i, subnet_idx in enumerate(pivot_df.index):
         coeff = nakamoto_coefficients.get(subnet_idx, "")
-        ax.text(i, bottoms[i] + 2, f"{coeff}", ha="center", fontsize=9)
+        ax.text(i, bottoms[subnet_idx] + 2, f"{coeff}", ha="center", fontsize=9)
 
     # Axis labels and title
     ax.set_xlabel("Subnet Index", fontsize=11)

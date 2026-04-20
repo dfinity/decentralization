@@ -127,4 +127,15 @@ def default_special_limits(
             "node_provider": {"DFINITY": (0, "eq")},
         }
 
+    # New Sev subnet
+    new_sev_subnet = network_topology[
+        network_topology["subnet_id"]
+        == "re2t4-faa75-v3vhk-kdmdr-uyrkl-aik2l-ixd6u-p3fyr-zlfkc-6c5af-zae"
+    ]
+    if not new_sev_subnet.empty:
+        new_sev_subnet_id = new_sev_subnet.index[0]
+        limits[new_sev_subnet_id] = {
+            "node_provider": {"DFINITY": (0, "eq")},
+        }
+
     return limits
