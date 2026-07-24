@@ -29,6 +29,14 @@ def prepare_data(
 ) -> Dict[str, Any]:
     # Remove everything that is not a replica
     df_nodes = df_nodes[df_nodes["node_type"] != "API_BOUNDARY"]
+    # Exclude reward-type-4 nodes (Type4, Type4dot1, ... Type4dot5) entirely so
+    # they never enter the ILP input space. The dashboard formats the value as
+    # e.g. "Type4dot5"; lowercasing makes the match robust to that and to the
+    # registry's "type4.5" form. Guarded so older CSVs without the column work.
+    if "node_reward_type" in df_nodes.columns:
+        df_nodes = df_nodes[
+            ~df_nodes["node_reward_type"].fillna("").str.lower().str.startswith("type4")
+        ]
     # Preprocessing
     current_nodes = create_node_dataframe(df_nodes, sev_node_providers)
 
@@ -124,6 +132,16 @@ def default_special_limits(
         swiss_subnet_id = swiss_subnets.index[0]
         limits[swiss_subnet_id] = {
             # Override the default requirement
+            "node_provider": {"DFINITY": (0, "eq")},
+        }
+
+    # Confidential (SEV) subnets do not host a DFINITY node, so override the
+    # default "exactly one DFINITY node per subnet" requirement.
+    confidential_subnets = network_topology[
+        network_topology["subnet_type"] == "Confidential"
+    ]
+    for confidential_subnet_id in confidential_subnets.index:
+        limits[confidential_subnet_id] = {
             "node_provider": {"DFINITY": (0, "eq")},
         }
 
