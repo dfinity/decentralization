@@ -16,6 +16,12 @@ click = "^8.2.1"
 pyyaml = "^6.0.2"
 
 
+[tool.ruff.lint]
+# Pin to ruff's documented default rule set so CI is stable across ruff
+# versions (newer ruff enables many more rules by default otherwise). The
+# codebase is clean under this set; broadening it is a separate cleanup.
+select = ["E4", "E7", "E9", "F"]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
